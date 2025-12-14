@@ -1,4 +1,4 @@
-# Punkster Inc Technical Documentation
+## Punkster Inc Technical Documentation
 
 This is a technical documentation site built with mkdocs.
 
