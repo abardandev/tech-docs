@@ -1,10 +1,10 @@
 # Punkster Inc Technical Documentation
 
-This site provides internal architecture, services and application overview for Punkster's financial apps.
+This site provides internal architecture and application overview for Punkster's financial apps.
 
 ## DogeCoiner IO
 
-This is a crypto portfolio management app. 
+This is a crypto portfolio management app.
 
 <figure markdown="span">
 [Live Demo](https://dogecoiner.punksterinc.com){:target="_blank" .md-button }
@@ -60,7 +60,7 @@ This allows for
 - smaller client payloads 
 - and optimized SSR features
   
-    * Next.js basically works like an Asp.Net SSR Razor web app, but with the full benefits of SPA development
+    * Next.js basically works like an Asp.Net SSR Razor web app, but with full benefits of SPA development
 
 Since it's a full client/server on its own, I've opted to deploy the front end to its own subdomain.
 
