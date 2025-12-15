@@ -96,16 +96,39 @@ This is the database that stores crypto price history and user portfolios.
 DogeCoiner DB Schema
 ```mermaid
 erDiagram
-    KL[KLines] {
+    direction LR
+    Users {
+        bigint UserId PK
+        string Username
+        bool IsRegistered
+    }
+    Portfolios {
+        bigint PortfolioId PK
+        bigint UserId FK
+        string PortfolioName
+    }
+    Transactions {
+        bigint TransactionId PK
+        bigint PortfolioId FK
         string Symbol
-        string Interval
-        date Timestamp
+        string TransactionType
+        decimal Quantity
+        decimal Price
+        date TimestampUtc
+    }
+    KLines[KLines] {
+        bigint KLineId PK
+        string Symbol UK
+        string Interval UK
+        date Timestamp UK
         decimal OpenPrice
         decimal HighPrice
         decimal LowPrice
         decimal ClosePrice
         decimal Volume
     }
+    Users ||--o{ Portfolios : own
+    Portfolios ||--o{ Transactions : have
 ```
 
 <figure markdown="span">
