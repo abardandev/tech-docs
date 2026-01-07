@@ -18,7 +18,8 @@ It's split up into the following client/server sub-systems.
 
 ```mermaid
 flowchart LR
-    A[Front End UI<br>_dogecoiner.punksterinc.com_] <--> S1;
+    A[Front End UI<br>_dogecoiner.punksterinc.com_] <--> G[Google Login]
+    A <--> S1;
 
     subgraph S1[ ]
         direction TB
@@ -44,6 +45,7 @@ This is also its own client/server stack using Next.js.
 
 ```mermaid
 flowchart LR
+    G[Google Login] <--> S1
     subgraph S1[_dogecoiner.punksterinc.com_]
         A[React Client] <--> B[Next.js];
     end
@@ -64,13 +66,25 @@ This allows for
 
 Since it's a full client/server on its own, I've opted to deploy the front end to its own subdomain.
 
+The UI allows Google login with NextAuth.js.
+
+- users login with Google in the UI
+- NextAuth generates its own JWE cookies that last 1 month
+- auth cookies are proxied to the API and used as secure user sessions
+
+
 <figure markdown="span">
 [UI Repo](https://github.com/abardandev/dogecoiner-ui){:target="_blank" .md-button}
 </figure>
 
 ### DogeCoiner-API
 
-This is an API for serving crypto price history and user portfolio data. 
+This is an API for serving crypto price history and user portfolio data.
+
+It is secured with JWE tokens proxied from the UI.
+
+- users login with Google in the UI
+- auth tokens are proxied to the API and used as secure user sessions
 
 So far, it can serve price history.
 
@@ -78,10 +92,13 @@ My app needs historical crypto price data. There are various free and paid 3rd p
 
 ```mermaid
 flowchart RL
+    S1 <--> G[Auth JWE Token]
+
     subgraph S1[ ]
         direction TB
         B[DogeCoiner API] <--> C[(DB)];
     end
+    
     D[3rd party API<br>_bitunix.com_] --> S1;
 ```
 
@@ -99,8 +116,12 @@ erDiagram
     direction LR
     Users {
         bigint UserId PK
-        string Username
-        bool IsRegistered
+        string Email
+        string FirstName
+        string LastName
+        string Picture
+        string ProviderSub
+        string ProviderName
     }
     Portfolios {
         bigint PortfolioId PK
